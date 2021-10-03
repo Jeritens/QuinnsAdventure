@@ -6,7 +6,7 @@ public class SpinningTop : MonoBehaviour
 {
     [SerializeField]
     float maxRpm = 1000f;
-    float rpm = 1000;
+    public float rpm = 1000;
     [SerializeField]
     Transform outerSpin;
     [SerializeField]
@@ -38,7 +38,7 @@ public class SpinningTop : MonoBehaviour
         rpm= Mathf.Min(maxRpm,force+rpm);
     }
     void Tilt(){
-        pivot.localRotation = Quaternion.Euler(((1-(rpm/maxRpm))*45),0,0);
+        pivot.localRotation = Quaternion.Euler(((1-(rpm/maxRpm))*35),0,0);
     }
     public void Hit(Vector3 force){
         rb.AddForce(force,ForceMode.Impulse);
