@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     CharacterController controller;
     Vector3 velocity;
+    bool isGrounded;
     [SerializeField]
     float rotationSpeed;
     [SerializeField]
@@ -20,6 +21,11 @@ public class Player : MonoBehaviour
     float PunchStrength;
     [SerializeField]
     float knockBack;
+    [SerializeField]
+    Animator animator;
+    [SerializeField]
+    Transform groundCheck;
+
 
     void Awake()
     {
@@ -44,8 +50,19 @@ public class Player : MonoBehaviour
 
         Vector3 move = new Vector3(x,0,z).normalized*Time.deltaTime*speed;
         controller.Move(move);
+        MoveAnim(move.normalized);
+    }
+    void MoveAnim(Vector3 dir){
+        Vector3 direction = transform.InverseTransformDirection(dir).normalized;
+
+        Debug.Log(direction);
+        // Debug.DrawRay(transform.position,transform.right);
+        // Debug.DrawRay(Vector3.zero,direction,Color.green);
+        animator.SetFloat("PosX",direction.x);
+        animator.SetFloat("PosY",direction.z);
     }
     void Gravity(){
+        //isGrounded= Physics.CheckSphere();
         velocity += Physics.gravity*Time.deltaTime;
         controller.Move(velocity*Time.deltaTime);
     }
@@ -66,6 +83,7 @@ public class Player : MonoBehaviour
         }
     }
     void Hit(){
+        animator.Play("punch");
         Collider[] tops = Physics.OverlapSphere(transform.position+transform.forward*punchDist,punchRadius,spinningTopMask);
         foreach (Collider top in tops)
         {
