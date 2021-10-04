@@ -28,6 +28,7 @@ public class SpinningTopPickUp : MonoBehaviour
     }
 
     public GameObject getSpinningTop(){
-        return spinningTopPrefab;
+        
+        return GameObject.Instantiate(spinningTopPrefab,transform.position,Quaternion.identity);
     }
 }
