@@ -331,6 +331,18 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 037bd2df83890f44f94ccb2012dc5eee, type: 3}
   - {fileID: 8300000, guid: 03f765329d2525f4a88aa916b8972a21, type: 3}
   - {fileID: 8300000, guid: 177061538063b5c4d84d43c7b95bb8ee, type: 3}
+  swingSounds:
+  - {fileID: 8300000, guid: 9864e95434816cd43af5972028e36a0b, type: 3}
+  - {fileID: 8300000, guid: c96b3a35388f5614195e27561f868f4f, type: 3}
+  - {fileID: 8300000, guid: 1cd1a72532a7fd546b8f92799225a2b4, type: 3}
+  - {fileID: 8300000, guid: 8f94093e1ca6db041a29da728bfa68bc, type: 3}
+  - {fileID: 8300000, guid: 958581c87e53b0247ae6ef3ffe105989, type: 3}
+  throwSounds:
+  - {fileID: 8300000, guid: f87904766d9fd7b4e9cbf91fec9b7292, type: 3}
+  - {fileID: 8300000, guid: 1f23b8d05adfbad4d81440f93091f160, type: 3}
+  - {fileID: 8300000, guid: dff2208ed8deaa14ebe45e937c54ad2b, type: 3}
+  - {fileID: 8300000, guid: 09d52434eaaf27340b28826bed707f49, type: 3}
+  - {fileID: 8300000, guid: fbfeb1881971f094ab099f82a24b54d8, type: 3}
 --- !u!82 &7928318151334528525
 AudioSource:
   m_ObjectHideFlags: 0
