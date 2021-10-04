@@ -37,11 +37,16 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     AudioClip[] punchSounds;
-    AudioSource audio;
+    [SerializeField]
+    AudioClip[] swingSounds;
+    [SerializeField]
+    AudioClip[] throwSounds;
+    AudioSource audioSource;
 
 
-    private void Start() {
-        audio = GetComponent<AudioSource>();
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -51,75 +56,92 @@ public class Player : MonoBehaviour
         Gravity();
         LookToMouse();
         Drag();
-        if(Input.GetButtonDown("Fire1")){
-            if(spinningTopHold!=null){
+        if (Input.GetButtonDown("Fire1"))
+        {
+            if (spinningTopHold != null)
+            {
                 ThrowSpinningTop();
-                spinningTopHold=null;
+                spinningTopHold = null;
             }
-            else{
+            else
+            {
                 Hit();
             }
         }
-        
+
     }
-    void Drag(){
-        velocity = new Vector3(velocity.x*Mathf.Pow(isGrounded?0.005f:0.5f,Time.deltaTime),velocity.y,velocity.z*Mathf.Pow(isGrounded?0.005f:0.5f,Time.deltaTime));
-        if(isGrounded && Mathf.Sqrt(velocity.x*velocity.x + velocity.z * velocity.z)< 2){
-            velocity.x=0;
-            velocity.z=0;
+    void Drag()
+    {
+        velocity = new Vector3(velocity.x * Mathf.Pow(isGrounded ? 0.005f : 0.5f, Time.deltaTime), velocity.y, velocity.z * Mathf.Pow(isGrounded ? 0.005f : 0.5f, Time.deltaTime));
+        if (isGrounded && Mathf.Sqrt(velocity.x * velocity.x + velocity.z * velocity.z) < 2)
+        {
+            velocity.x = 0;
+            velocity.z = 0;
         }
     }
-    public void Move(){
+    public void Move()
+    {
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
-        
 
-        Vector3 move = new Vector3(x,0,z).normalized*Time.deltaTime*speed;
+
+        Vector3 move = new Vector3(x, 0, z).normalized * Time.deltaTime * speed;
         controller.Move(move);
         MoveAnim(move.normalized);
     }
-    void MoveAnim(Vector3 dir){
+    void MoveAnim(Vector3 dir)
+    {
         Vector3 direction = transform.InverseTransformDirection(dir).normalized;
 
         // Debug.DrawRay(transform.position,transform.right);
         // Debug.DrawRay(Vector3.zero,direction,Color.green);
-        animator.SetFloat("PosX",direction.x);
-        animator.SetFloat("PosY",direction.z);
+        animator.SetFloat("PosX", direction.x);
+        animator.SetFloat("PosY", direction.z);
     }
-    void Gravity(){
-        isGrounded= Physics.CheckSphere(groundCheck.position, groundDistance,groundMask);
-        if(isGrounded && velocity.y<0){
-            velocity.y =-2f;
+    void Gravity()
+    {
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        if (isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f;
         }
-        velocity += Physics.gravity*Time.deltaTime;
-        controller.Move(velocity*Time.deltaTime);
+        velocity += Physics.gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
     }
 
-    void LookToMouse(){
-        Ray cameraRay =Camera.main.ScreenPointToRay(Input.mousePosition);
-        Plane groundPlane = new Plane(Vector3.up, new Vector3(0,1.5f,0)); // y value (1.5) eye level for better rotation, maybe change with ground floor later
+    void LookToMouse()
+    {
+        Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Plane groundPlane = new Plane(Vector3.up, new Vector3(0, 1.5f, 0)); // y value (1.5) eye level for better rotation, maybe change with ground floor later
         float rayLength;
 
-        if(groundPlane.Raycast(cameraRay, out rayLength)){
+        if (groundPlane.Raycast(cameraRay, out rayLength))
+        {
             Vector3 pointToLook = cameraRay.GetPoint(rayLength);
             // lerp not good
             // Quaternion rotation = Quaternion.LookRotation(new Vector3(pointToLook.x, transform.position.y, pointToLook.z)-transform.position);
             // transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
             Vector3 direction = new Vector3(pointToLook.x, transform.position.y, pointToLook.z) - transform.position;
             Quaternion rotation1 = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation1, rotationSpeed*Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation1, rotationSpeed * Time.deltaTime);
         }
     }
-    void Hit(){
-        if(!animator.GetCurrentAnimatorStateInfo(1).IsName("punch")){
+    void Hit()
+    {
+        if (!animator.GetCurrentAnimatorStateInfo(1).IsName("punch"))
+        {
             animator.Play("punch");
-            audio.PlayOneShot(punchSounds[Random.Range(0, punchSounds.Length)]);
-            Collider[] tops = Physics.OverlapSphere(transform.position+transform.forward*punchDist,punchRadius,spinningTopMask);
+            audioSource.PlayOneShot(swingSounds[Random.Range(0, swingSounds.Length)], 0.3f);
+            Collider[] tops = Physics.OverlapSphere(transform.position + transform.forward * punchDist, punchRadius, spinningTopMask);
+            if (tops.Length > 0)
+            {
+                audioSource.PlayOneShot(punchSounds[Random.Range(0, punchSounds.Length)], 0.5f);
+            }
             foreach (Collider top in tops)
             {
                 SpinningTop st = top.GetComponent<SpinningTop>();
                 st.speedUp(PunchStrength);
-                st.Hit(transform.forward*knockBack);
+                st.Hit(transform.forward * knockBack);
             }
             // Debug.DrawRay(transform.position+transform.forward*punchDist,Vector3.forward *punchRadius,Color.green);
             // Debug.DrawRay(transform.position+transform.forward*punchDist,-Vector3.forward *punchRadius,Color.green);
@@ -130,66 +152,76 @@ public class Player : MonoBehaviour
         }
     }
 
-    void ThrowSpinningTop(){
-        animator.SetBool("holding",false);
+    void ThrowSpinningTop()
+    {
+        audioSource.PlayOneShot(throwSounds[Random.Range(0, throwSounds.Length)], 0.2f);
+        animator.SetBool("holding", false);
         animator.Play("throw");
         //Instantiate(spinningTopHold, transform.position + transform.forward * spinningTopReleaseDistance, Quaternion.identity);
-        spinningTopHold.GetComponent<SpinningTop>().Throw(transform.forward*10);
-        spinningTopHold.transform.parent=null;
+        spinningTopHold.GetComponent<SpinningTop>().Throw(transform.forward * 10);
+        spinningTopHold.transform.parent = null;
         GameManager.instance.addSpinningTop(spinningTopHold.GetComponent<SpinningTop>());
     }
 
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if(hit.gameObject.GetComponent<SpinningTop>()!=null){
-            
-            SpinningTop top =hit.gameObject.GetComponent<SpinningTop>();
-            if(top.active){
-                Vector3 topToPlayer = transform.position-hit.gameObject.transform.position;
-                topToPlayer.y=0;
+        if (hit.gameObject.GetComponent<SpinningTop>() != null)
+        {
+
+            SpinningTop top = hit.gameObject.GetComponent<SpinningTop>();
+            if (top.active)
+            {
+                Vector3 topToPlayer = transform.position - hit.gameObject.transform.position;
+                topToPlayer.y = 0;
                 topToPlayer.Normalize();
-                Vector3 dir = Quaternion.Euler(0,80,0) * topToPlayer;
+                Vector3 dir = Quaternion.Euler(0, 80, 0) * topToPlayer;
                 // Debug.DrawRay(transform.position,topToPlayer,Color.blue,5);
                 // Debug.DrawRay(transform.position,dir,Color.red,5);
-                velocity += dir*hit.gameObject.GetComponent<SpinningTop>().rpm*0.001f;
-                velocity+=Vector3.up*top.rpm*0.01f;
-                velocity.y = Mathf.Min(2,velocity.y);
+                velocity += dir * hit.gameObject.GetComponent<SpinningTop>().rpm * 0.001f;
+                velocity += Vector3.up * top.rpm * 0.01f;
+                velocity.y = Mathf.Min(2, velocity.y);
             }
-            
+
         }
 
-        
+
     }
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.GetComponent<ShopItem>()!=null){
-            
+        if (other.gameObject.GetComponent<ShopItem>() != null)
+        {
+
             bool isTop = false;
-            if(other.gameObject.GetComponent<SpinningTopPickUp>()!=null){
-                if(spinningTopHold==null){
-                    
-                    isTop=true;
+            if (other.gameObject.GetComponent<SpinningTopPickUp>() != null)
+            {
+                if (spinningTopHold == null)
+                {
+
+                    isTop = true;
                 }
-                else{
+                else
+                {
                     return;
                 }
-                
+
                 //Destroy(hit.gameObject.GetComponent<SpinningTopPickUp>().gameObject);
             }
 
             ShopItem item = other.gameObject.GetComponent<ShopItem>();
-            if(item.buy()){
+            if (item.buy())
+            {
                 Debug.Log("test");
-                if(isTop){
+                if (isTop)
+                {
                     spinningTopHold = other.gameObject.GetComponent<SpinningTopPickUp>().getSpinningTop();
-                    animator.SetBool("holding",true);
-                    spinningTopHold.transform.position=holdingPosition.position;
-                    spinningTopHold.transform.parent=transform;
+                    animator.SetBool("holding", true);
+                    spinningTopHold.transform.position = holdingPosition.position;
+                    spinningTopHold.transform.parent = transform;
                 }
             }
 
-            
+
         }
         // if(other.gameObject.GetComponent<SpinningTopPickUp>()!=null && spinningTopHold==null){
         //     spinningTopHold = other.gameObject.GetComponent<SpinningTopPickUp>().getSpinningTop();

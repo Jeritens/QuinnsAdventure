@@ -11,7 +11,7 @@ public class ShopItem : MonoBehaviour
     public float multiply;
     [SerializeField]
     TextMeshPro text;
-    Light light;
+    Light lightAvailable;
     public float add;
     public bool oneTimeSell;
     public UnityEvent Event;
@@ -19,7 +19,7 @@ public class ShopItem : MonoBehaviour
     {
         
         text = transform.parent.parent.GetComponentInChildren<TextMeshPro>();
-        light = transform.parent.parent.GetComponentInChildren<Light>();
+        lightAvailable = transform.parent.parent.GetComponentInChildren<Light>();
         DisplayPrice();
     }
     /// <summary>
@@ -31,7 +31,7 @@ public class ShopItem : MonoBehaviour
     }
     void CheckPrice(){
         bool affortable = GameManager.instance.points>=price;
-        light.enabled=affortable;
+        lightAvailable.enabled=affortable;
     }
 
     public bool buy(){ 
