@@ -15,7 +15,11 @@ public class SpinningTop : MonoBehaviour
     Transform pivot;
     [SerializeField]
     float slowDownRate;
+    [SerializeField]
+    LayerMask BounceOff;
     Rigidbody rb;
+    [SerializeField]
+    float knockBack;
 
 /// <summary>
 /// Start is called on the frame when a script is enabled just before
@@ -47,4 +51,17 @@ public class SpinningTop : MonoBehaviour
         rpm = Mathf.Max(rpm-slowDownRate * Time.deltaTime,0);
         //rpm *= Mathf.Pow(slowDownRate,Time.deltaTime);
     }
+    void OnCollisionEnter(Collision other)
+    {
+        Debug.Log("test");
+        if( BounceOff == (BounceOff | (1 << other.gameObject.layer))){
+            
+            Vector3 dir = transform.position-other.transform.position;
+            dir.y= 0;
+            dir.Normalize();
+            rb.AddForce(dir*rpm*knockBack,ForceMode.Impulse);
+        }   
+        
+    }
+    
 }
