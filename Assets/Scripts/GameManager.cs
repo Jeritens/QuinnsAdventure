@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public float points;
     
     static public GameManager instance;
+    public int extraLifes = 0;
 
     private void Awake() {
         instance = this;
@@ -27,7 +28,20 @@ public class GameManager : MonoBehaviour
     }
 
     public void stoppedSpinning(){
-        Debug.Log("one stopped spinning \t score: " + score);
+        if(extraLifes>0){
+            extraLifes--;
+            SpinAll(1000f);
+        }
+        else{
+            Debug.Log("one stopped spinning \t score: " + score);
+        }
+        
+    }
+    public void SpinAll(float rpm){
+        foreach (SpinningTop top in tops)
+        {
+            top.speedUp(rpm);
+        }
     }
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
@@ -38,6 +52,9 @@ public class GameManager : MonoBehaviour
         {
             points += top.pointsPerSecond *Time.deltaTime;
         }
+    }
+    public void AddPoints(float amount){
+        points += amount;
     }
 
 

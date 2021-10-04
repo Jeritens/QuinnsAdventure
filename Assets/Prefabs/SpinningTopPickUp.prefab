@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 7169024993065698728}
   - component: {fileID: 6886234639930520513}
   - component: {fileID: 2444689306554419396}
+  - component: {fileID: 2900488144226840787}
   m_Layer: 0
   m_Name: SpinningTopPickUp
   m_TagString: Untagged
@@ -156,6 +157,26 @@ MonoBehaviour:
   rpm: 420
   pivotRpm: 69
   outerRotation: {fileID: 8663799871209816179}
+--- !u!114 &2900488144226840787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4641091736642415590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75582e518769e554b87fe51db0ab502f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  price: 0
+  multiply: 3
+  text: {fileID: 0}
+  add: 1
+  oneTimeSell: 0
+  Event:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &8676581357752252735
 PrefabInstance:
   m_ObjectHideFlags: 0

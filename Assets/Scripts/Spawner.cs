@@ -12,6 +12,6 @@ public class Spawner : MonoBehaviour
     }
 
     public void spawnSpinningTop(){
-        Instantiate(spinningTopPickUp, transform.position, Quaternion.identity);
+        Instantiate(spinningTopPickUp, transform.position, Quaternion.identity,transform);
     }
 }

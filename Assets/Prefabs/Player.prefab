@@ -324,7 +324,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 119
-  holdingPosition: {fileID: 0}
+  holdingPosition: {fileID: 7751984457852043657}
   punchSounds:
   - {fileID: 8300000, guid: 5b388d6115d32904eafc6f91f9efb6af, type: 3}
   - {fileID: 8300000, guid: efafe9c3cc779534eaf54ff8fc9e9b10, type: 3}

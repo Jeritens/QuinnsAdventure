@@ -163,13 +163,41 @@ public class Player : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.GetComponent<SpinningTopPickUp>()!=null && spinningTopHold==null){
-            spinningTopHold = other.gameObject.GetComponent<SpinningTopPickUp>().getSpinningTop();
-            animator.SetBool("holding",true);
-            spinningTopHold.transform.position=holdingPosition.position;
-            spinningTopHold.transform.parent=transform;
-            //Destroy(hit.gameObject.GetComponent<SpinningTopPickUp>().gameObject);
+        if(other.gameObject.GetComponent<ShopItem>()!=null){
+            
+            bool isTop = false;
+            if(other.gameObject.GetComponent<SpinningTopPickUp>()!=null){
+                if(spinningTopHold==null){
+                    
+                    isTop=true;
+                }
+                else{
+                    return;
+                }
+                
+                //Destroy(hit.gameObject.GetComponent<SpinningTopPickUp>().gameObject);
+            }
+
+            ShopItem item = other.gameObject.GetComponent<ShopItem>();
+            if(item.buy()){
+                Debug.Log("test");
+                if(isTop){
+                    spinningTopHold = other.gameObject.GetComponent<SpinningTopPickUp>().getSpinningTop();
+                    animator.SetBool("holding",true);
+                    spinningTopHold.transform.position=holdingPosition.position;
+                    spinningTopHold.transform.parent=transform;
+                }
+            }
+
+            
         }
+        // if(other.gameObject.GetComponent<SpinningTopPickUp>()!=null && spinningTopHold==null){
+        //     spinningTopHold = other.gameObject.GetComponent<SpinningTopPickUp>().getSpinningTop();
+        //     animator.SetBool("holding",true);
+        //     spinningTopHold.transform.position=holdingPosition.position;
+        //     spinningTopHold.transform.parent=transform;
+        //     //Destroy(hit.gameObject.GetComponent<SpinningTopPickUp>().gameObject);
+        // }
     }
 
 
