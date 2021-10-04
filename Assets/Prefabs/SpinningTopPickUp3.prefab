@@ -169,15 +169,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75582e518769e554b87fe51db0ab502f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  price: 0
+  price: 200
   multiply: 3
   text: {fileID: 0}
-  add: 1
+  add: 0
   oneTimeSell: 0
   Event:
     m_PersistentCalls:
       m_Calls: []
-  name: BASIC TOP
+  name: TIME TOP
 --- !u!1001 &2130646014640979544
 PrefabInstance:
   m_ObjectHideFlags: 0

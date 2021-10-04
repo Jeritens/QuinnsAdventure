@@ -52,22 +52,26 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move();
-        Gravity();
-        LookToMouse();
-        Drag();
-        if (Input.GetButtonDown("Fire1"))
+        if (!GameManager.instance.paused)
         {
-            if (spinningTopHold != null)
+            Move();
+            Gravity();
+            LookToMouse();
+            Drag();
+            if (Input.GetButtonDown("Fire1"))
             {
-                ThrowSpinningTop();
-                spinningTopHold = null;
-            }
-            else
-            {
-                Hit();
+                if (spinningTopHold != null)
+                {
+                    ThrowSpinningTop();
+                    spinningTopHold = null;
+                }
+                else
+                {
+                    Hit();
+                }
             }
         }
+
 
     }
     void Drag()
