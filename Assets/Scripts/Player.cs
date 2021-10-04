@@ -182,7 +182,7 @@ public class Player : MonoBehaviour
                 Vector3 dir = Quaternion.Euler(0, 80, 0) * topToPlayer;
                 // Debug.DrawRay(transform.position,topToPlayer,Color.blue,5);
                 // Debug.DrawRay(transform.position,dir,Color.red,5);
-                velocity += dir * hit.gameObject.GetComponent<SpinningTop>().rpm * 0.001f;
+                velocity += dir * 0.420f * hit.gameObject.GetComponent<SpinningTop>().rpm / hit.gameObject.GetComponent<SpinningTop>().maxRpm;
                 velocity += Vector3.up * top.rpm * 0.01f;
                 velocity.y = Mathf.Min(2, velocity.y);
             }

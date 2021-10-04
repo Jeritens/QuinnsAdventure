@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpinningTop : MonoBehaviour
 {
     [SerializeField]
-    float maxRpm = 1000f;
+    public float maxRpm = 1000f;
     public float rpm = 1000;
     [SerializeField]
     Transform outerSpin;
@@ -19,7 +19,7 @@ public class SpinningTop : MonoBehaviour
     LayerMask BounceOff;
     Rigidbody rb;
     [SerializeField]
-    float knockBack;
+    public float knockBack;
     public bool active = false;
     public float pointsPerSecond;
     [SerializeField]
