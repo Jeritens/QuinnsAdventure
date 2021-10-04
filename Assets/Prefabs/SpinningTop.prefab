@@ -395,6 +395,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 192
   knockBack: 0.007
+  active: 0
+  pointsPerSecond: 1
 --- !u!135 &8968774825834998261
 SphereCollider:
   m_ObjectHideFlags: 0

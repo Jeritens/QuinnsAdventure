@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     Player player;
+    public List<SpinningTop> tops = new List<SpinningTop>();
+    public float points;
     
     static public GameManager instance;
 
@@ -18,13 +20,24 @@ public class GameManager : MonoBehaviour
         score = 0;
     }
 
-    public void addSpinningTop(){
+    public void addSpinningTop(SpinningTop top){
         score++;
-        spawner.spawnSpinningTop();
+        tops.Add(top);
+        //spawner.spawnSpinningTop();
     }
 
     public void stoppedSpinning(){
         Debug.Log("one stopped spinning \t score: " + score);
+    }
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
+    void Update()
+    {
+        foreach (SpinningTop top in tops)
+        {
+            points += top.pointsPerSecond *Time.deltaTime;
+        }
     }
 
 

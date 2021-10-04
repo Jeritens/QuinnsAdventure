@@ -126,7 +126,7 @@ public class Player : MonoBehaviour
         //Instantiate(spinningTopHold, transform.position + transform.forward * spinningTopReleaseDistance, Quaternion.identity);
         spinningTopHold.GetComponent<SpinningTop>().Throw(transform.forward*10);
         spinningTopHold.transform.parent=null;
-        GameManager.instance.addSpinningTop();
+        GameManager.instance.addSpinningTop(spinningTopHold.GetComponent<SpinningTop>());
     }
 
 
@@ -149,12 +149,16 @@ public class Player : MonoBehaviour
             
         }
 
-        if(hit.gameObject.GetComponent<SpinningTopPickUp>()!=null){
-            spinningTopHold = hit.gameObject.GetComponent<SpinningTopPickUp>().getSpinningTop();
+        
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.GetComponent<SpinningTopPickUp>()!=null && spinningTopHold==null){
+            spinningTopHold = other.gameObject.GetComponent<SpinningTopPickUp>().getSpinningTop();
             animator.SetBool("holding",true);
             spinningTopHold.transform.position=holdingPosition.position;
             spinningTopHold.transform.parent=transform;
-            Destroy(hit.gameObject.GetComponent<SpinningTopPickUp>().gameObject);
+            //Destroy(hit.gameObject.GetComponent<SpinningTopPickUp>().gameObject);
         }
     }
 

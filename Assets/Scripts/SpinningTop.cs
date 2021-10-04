@@ -21,6 +21,7 @@ public class SpinningTop : MonoBehaviour
     [SerializeField]
     float knockBack;
     public bool active = false;
+    public float pointsPerSecond;
 
 /// <summary>
 /// Start is called on the frame when a script is enabled just before
@@ -49,7 +50,7 @@ public class SpinningTop : MonoBehaviour
         rpm= Mathf.Min(maxRpm,force+rpm);
     }
     void Tilt(){
-        pivot.localRotation = Quaternion.Euler(((1-(rpm/maxRpm))*35),0,0);
+        pivot.localRotation = Quaternion.Slerp(pivot.localRotation,Quaternion.Euler(((1-(rpm/maxRpm))*35),0,0),Time.deltaTime*0.995f);
     }
     public void Hit(Vector3 force){
         rb.AddForce(force,ForceMode.Impulse);
