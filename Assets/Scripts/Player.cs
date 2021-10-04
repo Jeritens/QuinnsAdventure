@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     float knockBack;
     bool hasSpinningTop;
-    public GameObject spinningTopPrefab;
+    GameObject spinningTopHold;
     [SerializeField]
     float spinningTopReleaseDistance;
     [SerializeField]
@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
-        hasSpinningTop = true;
+        hasSpinningTop = false;
     }
 
     // Update is called once per frame
@@ -116,8 +116,6 @@ public class Player : MonoBehaviour
             st.speedUp(PunchStrength);
             st.Hit(transform.forward*knockBack);
         }
-
-
         // Debug.DrawRay(transform.position+transform.forward*punchDist,Vector3.forward *punchRadius,Color.green);
         // Debug.DrawRay(transform.position+transform.forward*punchDist,-Vector3.forward *punchRadius,Color.green);
         // Debug.DrawRay(transform.position+transform.forward*punchDist,Vector3.up *punchRadius,Color.green);
@@ -127,7 +125,9 @@ public class Player : MonoBehaviour
     }
 
     void SpawnSpinningTop(){
-        Instantiate(spinningTopPrefab, transform.position + transform.forward * spinningTopReleaseDistance, Quaternion.identity);
+        Instantiate(spinningTopHold, transform.position + transform.forward * spinningTopReleaseDistance, Quaternion.identity);
+        //spinningTopHold.launch
+        GameManager.instance.addSpinningTop();
     }
 
 
@@ -145,5 +145,13 @@ public class Player : MonoBehaviour
             velocity+=Vector3.up*top.rpm*0.01f;
             velocity.y = Mathf.Min(2,velocity.y);
         }
+
+        if(hit.gameObject.GetComponent<SpinningTopPickUp>()!=null){
+            hasSpinningTop = true;
+            spinningTopHold = hit.gameObject.GetComponent<SpinningTopPickUp>().getSpinningTop();
+            Destroy(hit.gameObject.GetComponent<SpinningTopPickUp>().gameObject);
+        }
     }
+
+
 }

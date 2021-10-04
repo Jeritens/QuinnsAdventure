@@ -29,6 +29,7 @@ public class SpinningTop : MonoBehaviour
     void Update()
     {
         SlowDown();
+        CheckStopped();
         Tilt();
         childTransform.Rotate(Vector3.up * rpm * Time.deltaTime,Space.Self);
         outerSpin.Rotate(Vector3.up * rpm * Time.deltaTime*0.5f,Space.Self);
@@ -46,5 +47,11 @@ public class SpinningTop : MonoBehaviour
     void SlowDown(){
         rpm = Mathf.Max(rpm-slowDownRate * Time.deltaTime,0);
         //rpm *= Mathf.Pow(slowDownRate,Time.deltaTime);
+    }
+
+    void CheckStopped(){
+        if(rpm == 0){
+            GameManager.instance.stoppedSpinning();
+        }
     }
 }
