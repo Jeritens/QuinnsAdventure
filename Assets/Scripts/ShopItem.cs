@@ -36,12 +36,21 @@ public class ShopItem : MonoBehaviour
 
     public bool buy(){ 
         Debug.Log("test");
-        if(GameManager.instance.points >= price){
+        if(GameManager.instance.points >= price &&price>=0){
             
             GameManager.instance.AddPoints(-price);
-            IncreasePrice();
-            DisplayPrice();
             Event.Invoke();
+            if(oneTimeSell){
+                text.text="";
+                price=-1;
+                transform.parent.parent.GetChild(3).gameObject.SetActive(true);
+            }
+            else{
+                IncreasePrice();
+                DisplayPrice();
+            }
+            
+            
             return true;
         }
         return false;

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8470633140490563679}
   - component: {fileID: 3627017025647133539}
   m_Layer: 0
-  m_Name: SpinningTopPickUp2 1
+  m_Name: extraLife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

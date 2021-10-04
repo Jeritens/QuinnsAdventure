@@ -74,6 +74,9 @@ public class SpinningTop : MonoBehaviour
             dir.y= 0;
             dir.Normalize();
             rb.AddForce(dir*rpm*knockBack,ForceMode.Impulse);
+            if(GameManager.instance.powerUps[0] && other.gameObject.GetComponent<SpinningTop>()!=null){
+                speedUp(other.gameObject.GetComponent<SpinningTop>().rpm *0.1f);
+            }
         }   
         
     }

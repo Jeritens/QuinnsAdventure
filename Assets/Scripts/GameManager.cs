@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public float points;
     
     static public GameManager instance;
+    public bool[] powerUps = new bool[5];
     public int extraLifes = 0;
 
     private void Awake() {
@@ -57,6 +58,6 @@ public class GameManager : MonoBehaviour
         points += amount;
     }
 
-
+    
     
 }
