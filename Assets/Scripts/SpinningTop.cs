@@ -129,5 +129,19 @@ public class SpinningTop : MonoBehaviour
         rb.isKinematic = false;
         rb.AddForce(dir, ForceMode.Impulse);
     }
+    void TimeTopSlowDown()
+    {
+        gyro[] gyros = GameObject.FindObjectsOfType<gyro>();
+        bool slowed = false;
+        foreach (gyro g in gyros)
+        {
+            if ((transform.position - g.transform.position).magnitude < g.radius)
+            {
+                slowed = true;
+            }
+        }
+        if (slowed)
+            speedUp(slowDownRate / 2);
+    }
 
 }

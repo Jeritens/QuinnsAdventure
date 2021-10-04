@@ -13,7 +13,7 @@ public class gyro : MonoBehaviour
     [SerializeField]
     LayerMask topMask;
     [SerializeField]
-    float radius;
+    public float radius;
 
 
 
@@ -24,18 +24,18 @@ public class gyro : MonoBehaviour
         //inner.localRotation = Quaternion.Euler(inner.localRotation.eulerAngles + Vector3.right * innerRpm);
         inner.Rotate(Vector3.up * innerRpm * Time.deltaTime, Space.Self);
 
-        speedUpAroundYou();
+        //speedUpAroundYou();
     }
-    void speedUpAroundYou()
-    {
-        Collider[] tops = Physics.OverlapSphere(transform.position, radius, topMask);
-        foreach (Collider col in tops)
-        {
-            if (col.GetComponent<SpinningTop>() != null)
-            {
-                SpinningTop top = col.GetComponent<SpinningTop>();
-                top.speedUp((top.slowDownRate / 2) * Time.deltaTime);
-            }
-        }
-    }
+    // void speedUpAroundYou()
+    // {
+    //     Collider[] tops = Physics.OverlapSphere(transform.position, radius, topMask);
+    //     foreach (Collider col in tops)
+    //     {
+    //         if (col.GetComponent<SpinningTop>() != null)
+    //         {
+    //             SpinningTop top = col.GetComponent<SpinningTop>();
+    //             top.speedUp((top.slowDownRate / 2) * Time.deltaTime);
+    //         }
+    //     }
+    // }
 }
