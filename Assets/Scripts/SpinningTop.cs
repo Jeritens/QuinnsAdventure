@@ -24,6 +24,14 @@ public class SpinningTop : MonoBehaviour
     public float pointsPerSecond;
     [SerializeField]
     float randomForce;
+    [SerializeField]
+    AudioClip[] collisionSounds;
+    [SerializeField]
+    AudioClip[] wooshSounds;
+    AudioClip wooshSound;
+    AudioSource audioSource;
+    float wooshTime;
+
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
@@ -31,7 +39,9 @@ public class SpinningTop : MonoBehaviour
     /// </summary>
     void Start()
     {
-
+        wooshSound = wooshSounds[Random.Range(0, wooshSounds.Length)];
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = wooshSound;
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = !active;
     }
@@ -45,6 +55,13 @@ public class SpinningTop : MonoBehaviour
             Tilt();
             childTransform.Rotate(Vector3.up * rpm * Time.deltaTime, Space.Self);
             outerSpin.Rotate(Vector3.up * rpm * Time.deltaTime * 0.5f, Space.Self);
+            wooshTime += Time.deltaTime * rpm / maxRpm;
+            if (wooshTime > 0.314f)
+            {
+                audioSource.PlayOneShot(wooshSound, 0.5f);
+                //audioSource.Play();
+                wooshTime = 0;
+            }
         }
 
 
@@ -102,6 +119,7 @@ public class SpinningTop : MonoBehaviour
             {
                 speedUp(other.gameObject.GetComponent<SpinningTop>().rpm * 0.1f);
             }
+            audioSource.PlayOneShot(collisionSounds[Random.Range(0, collisionSounds.Length)], 0.8f);
         }
 
     }
