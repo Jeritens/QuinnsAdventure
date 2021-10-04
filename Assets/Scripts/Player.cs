@@ -35,7 +35,14 @@ public class Player : MonoBehaviour
     [SerializeField]
     Transform holdingPosition;
 
+    [SerializeField]
+    AudioClip[] punchSounds;
+    AudioSource audio;
 
+
+    private void Start() {
+        audio = GetComponent<AudioSource>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -104,20 +111,23 @@ public class Player : MonoBehaviour
         }
     }
     void Hit(){
-        animator.Play("punch");
-        Collider[] tops = Physics.OverlapSphere(transform.position+transform.forward*punchDist,punchRadius,spinningTopMask);
-        foreach (Collider top in tops)
-        {
-            SpinningTop st = top.GetComponent<SpinningTop>();
-            st.speedUp(PunchStrength);
-            st.Hit(transform.forward*knockBack);
+        if(!animator.GetCurrentAnimatorStateInfo(1).IsName("punch")){
+            animator.Play("punch");
+            audio.PlayOneShot(punchSounds[Random.Range(0, punchSounds.Length)]);
+            Collider[] tops = Physics.OverlapSphere(transform.position+transform.forward*punchDist,punchRadius,spinningTopMask);
+            foreach (Collider top in tops)
+            {
+                SpinningTop st = top.GetComponent<SpinningTop>();
+                st.speedUp(PunchStrength);
+                st.Hit(transform.forward*knockBack);
+            }
+            // Debug.DrawRay(transform.position+transform.forward*punchDist,Vector3.forward *punchRadius,Color.green);
+            // Debug.DrawRay(transform.position+transform.forward*punchDist,-Vector3.forward *punchRadius,Color.green);
+            // Debug.DrawRay(transform.position+transform.forward*punchDist,Vector3.up *punchRadius,Color.green);
+            // Debug.DrawRay(transform.position+transform.forward*punchDist,-Vector3.up *punchRadius,Color.green);
+            // Debug.DrawRay(transform.position+transform.forward*punchDist,Vector3.right *punchRadius,Color.green);
+            // Debug.DrawRay(transform.position+transform.forward*punchDist,-Vector3.right *punchRadius,Color.green);
         }
-        // Debug.DrawRay(transform.position+transform.forward*punchDist,Vector3.forward *punchRadius,Color.green);
-        // Debug.DrawRay(transform.position+transform.forward*punchDist,-Vector3.forward *punchRadius,Color.green);
-        // Debug.DrawRay(transform.position+transform.forward*punchDist,Vector3.up *punchRadius,Color.green);
-        // Debug.DrawRay(transform.position+transform.forward*punchDist,-Vector3.up *punchRadius,Color.green);
-        // Debug.DrawRay(transform.position+transform.forward*punchDist,Vector3.right *punchRadius,Color.green);
-        // Debug.DrawRay(transform.position+transform.forward*punchDist,-Vector3.right *punchRadius,Color.green);
     }
 
     void ThrowSpinningTop(){
