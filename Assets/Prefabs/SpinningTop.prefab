@@ -397,6 +397,7 @@ MonoBehaviour:
   knockBack: 0.007
   active: 0
   pointsPerSecond: 1
+  randomForce: 40
 --- !u!135 &8968774825834998261
 SphereCollider:
   m_ObjectHideFlags: 0

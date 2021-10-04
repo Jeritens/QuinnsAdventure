@@ -15,6 +15,7 @@ public class ShopItem : MonoBehaviour
     public float add;
     public bool oneTimeSell;
     public UnityEvent Event;
+    public string name;
     void Start()
     {
         
@@ -30,6 +31,10 @@ public class ShopItem : MonoBehaviour
         CheckPrice();
     }
     void CheckPrice(){
+        if(price<0){
+            light.enabled = false;
+            return;
+        }
         bool affortable = GameManager.instance.points>=price;
         light.enabled=affortable;
     }
@@ -61,7 +66,7 @@ public class ShopItem : MonoBehaviour
         price *= multiply;
     }
     void DisplayPrice(){
-        text.text = price.ToString();
+        text.text = name + "\n"+price.ToString();
         
     }
 }

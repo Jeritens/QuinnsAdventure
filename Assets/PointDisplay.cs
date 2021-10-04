@@ -7,7 +7,7 @@ public class PointDisplay : MonoBehaviour
 {
     [SerializeField]
     TextMeshProUGUI display;
-    
+
 
     // Update is called once per frame
     void Update()

@@ -112,6 +112,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  name: BOUNCE SPEED UP
 --- !u!114 &1999045716006085951
 MonoBehaviour:
   m_ObjectHideFlags: 0

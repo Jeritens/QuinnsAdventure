@@ -177,6 +177,7 @@ MonoBehaviour:
   Event:
     m_PersistentCalls:
       m_Calls: []
+  name: STABLE TOP
 --- !u!1001 &2470782531530364840
 PrefabInstance:
   m_ObjectHideFlags: 0
