@@ -20,10 +20,16 @@ public class Player : MonoBehaviour
     float PunchStrength;
     [SerializeField]
     float knockBack;
+    bool hasSpinningTop;
+    public GameObject spinningTopPrefab;
+    [SerializeField]
+    float spinningTopReleaseDistance;
+
+
 
     void Awake()
     {
-        
+        hasSpinningTop = true;
     }
 
     // Update is called once per frame
@@ -33,7 +39,13 @@ public class Player : MonoBehaviour
         Gravity();
         LookToMouse();
         if(Input.GetButtonDown("Fire1")){
-            Hit();
+            if(hasSpinningTop){
+                SpawnSpinningTop();
+                hasSpinningTop = false;
+            }
+            else{
+                Hit();
+            }
         }
         
     }
@@ -82,4 +94,12 @@ public class Player : MonoBehaviour
         // Debug.DrawRay(transform.position+transform.forward*punchDist,Vector3.right *punchRadius,Color.green);
         // Debug.DrawRay(transform.position+transform.forward*punchDist,-Vector3.right *punchRadius,Color.green);
     }
+
+    void SpawnSpinningTop(){
+        Instantiate(spinningTopPrefab, transform.position + transform.forward * spinningTopReleaseDistance, Quaternion.identity);
+    }
+
+
+
+
 }
