@@ -18,7 +18,7 @@ public class ShopItem : MonoBehaviour
     public string name;
     void Start()
     {
-        
+
         text = transform.parent.parent.GetComponentInChildren<TextMeshPro>();
         lightAvailable = transform.parent.parent.GetComponentInChildren<Light>();
         DisplayPrice();
@@ -30,43 +30,51 @@ public class ShopItem : MonoBehaviour
     {
         CheckPrice();
     }
-    void CheckPrice(){
-        if(price<0){
-            light.enabled = false;
+    void CheckPrice()
+    {
+        if (price < 0)
+        {
+            lightAvailable.enabled = false;
             return;
         }
-        bool affortable = GameManager.instance.points>=price;
-        lightAvailable.enabled=affortable;
+        bool affortable = GameManager.instance.points >= price;
+        lightAvailable.enabled = affortable;
     }
 
-    public bool buy(){ 
+    public bool buy()
+    {
         Debug.Log("test");
-        if(GameManager.instance.points >= price &&price>=0){
-            
+        if (GameManager.instance.points >= price && price >= 0)
+        {
+
             GameManager.instance.AddPoints(-price);
             Event.Invoke();
-            if(oneTimeSell){
-                text.text="";
-                price=-1;
+            if (oneTimeSell)
+            {
+                text.text = "";
+                price = -1;
                 transform.parent.parent.GetChild(3).gameObject.SetActive(true);
             }
-            else{
+            else
+            {
                 IncreasePrice();
                 DisplayPrice();
             }
-            
-            
+
+
             return true;
         }
         return false;
-        
+
     }
-    void IncreasePrice(){
+    void IncreasePrice()
+    {
         price += add;
         price *= multiply;
     }
-    void DisplayPrice(){
-        text.text = name + "\n"+price.ToString();
-        
+    void DisplayPrice()
+    {
+        text.text = name + "\n" + price.ToString();
+
     }
 }
