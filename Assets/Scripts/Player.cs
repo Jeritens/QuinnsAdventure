@@ -21,7 +21,6 @@ public class Player : MonoBehaviour
     float PunchStrength;
     [SerializeField]
     float knockBack;
-    bool hasSpinningTop;
     GameObject spinningTopHold;
     [SerializeField]
     float spinningTopReleaseDistance;
@@ -33,13 +32,10 @@ public class Player : MonoBehaviour
     float groundDistance;
     [SerializeField]
     LayerMask groundMask;
+    [SerializeField]
+    Transform holdingPosition;
 
 
-
-    void Awake()
-    {
-        hasSpinningTop = false;
-    }
 
     // Update is called once per frame
     void Update()
@@ -49,9 +45,9 @@ public class Player : MonoBehaviour
         LookToMouse();
         Drag();
         if(Input.GetButtonDown("Fire1")){
-            if(hasSpinningTop){
-                SpawnSpinningTop();
-                hasSpinningTop = false;
+            if(spinningTopHold!=null){
+                ThrowSpinningTop();
+                spinningTopHold=null;
             }
             else{
                 Hit();
@@ -124,9 +120,12 @@ public class Player : MonoBehaviour
         // Debug.DrawRay(transform.position+transform.forward*punchDist,-Vector3.right *punchRadius,Color.green);
     }
 
-    void SpawnSpinningTop(){
-        Instantiate(spinningTopHold, transform.position + transform.forward * spinningTopReleaseDistance, Quaternion.identity);
-        //spinningTopHold.launch
+    void ThrowSpinningTop(){
+        animator.SetBool("holding",false);
+        animator.Play("throw");
+        //Instantiate(spinningTopHold, transform.position + transform.forward * spinningTopReleaseDistance, Quaternion.identity);
+        spinningTopHold.GetComponent<SpinningTop>().Throw(transform.forward*10);
+        spinningTopHold.transform.parent=null;
         GameManager.instance.addSpinningTop();
     }
 
@@ -134,21 +133,27 @@ public class Player : MonoBehaviour
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if(hit.gameObject.GetComponent<SpinningTop>()!=null){
+            
             SpinningTop top =hit.gameObject.GetComponent<SpinningTop>();
-            Vector3 topToPlayer = transform.position-hit.gameObject.transform.position;
-            topToPlayer.y=0;
-            topToPlayer.Normalize();
-            Vector3 dir = Quaternion.Euler(0,80,0) * topToPlayer;
-            // Debug.DrawRay(transform.position,topToPlayer,Color.blue,5);
-            // Debug.DrawRay(transform.position,dir,Color.red,5);
-            velocity += dir*hit.gameObject.GetComponent<SpinningTop>().rpm*0.001f;
-            velocity+=Vector3.up*top.rpm*0.01f;
-            velocity.y = Mathf.Min(2,velocity.y);
+            if(top.active){
+                Vector3 topToPlayer = transform.position-hit.gameObject.transform.position;
+                topToPlayer.y=0;
+                topToPlayer.Normalize();
+                Vector3 dir = Quaternion.Euler(0,80,0) * topToPlayer;
+                // Debug.DrawRay(transform.position,topToPlayer,Color.blue,5);
+                // Debug.DrawRay(transform.position,dir,Color.red,5);
+                velocity += dir*hit.gameObject.GetComponent<SpinningTop>().rpm*0.001f;
+                velocity+=Vector3.up*top.rpm*0.01f;
+                velocity.y = Mathf.Min(2,velocity.y);
+            }
+            
         }
 
         if(hit.gameObject.GetComponent<SpinningTopPickUp>()!=null){
-            hasSpinningTop = true;
             spinningTopHold = hit.gameObject.GetComponent<SpinningTopPickUp>().getSpinningTop();
+            animator.SetBool("holding",true);
+            spinningTopHold.transform.position=holdingPosition.position;
+            spinningTopHold.transform.parent=transform;
             Destroy(hit.gameObject.GetComponent<SpinningTopPickUp>().gameObject);
         }
     }

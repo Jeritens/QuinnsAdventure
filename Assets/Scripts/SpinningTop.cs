@@ -20,6 +20,7 @@ public class SpinningTop : MonoBehaviour
     Rigidbody rb;
     [SerializeField]
     float knockBack;
+    public bool active = false;
 
 /// <summary>
 /// Start is called on the frame when a script is enabled just before
@@ -27,16 +28,21 @@ public class SpinningTop : MonoBehaviour
 /// </summary>
     void Start()
     {
+        
         rb = GetComponent<Rigidbody>();
+        rb.isKinematic =!active;
     }
     // Update is called once per frame
     void Update()
     {
-        SlowDown();
-        CheckStopped();
-        Tilt();
-        childTransform.Rotate(Vector3.up * rpm * Time.deltaTime,Space.Self);
-        outerSpin.Rotate(Vector3.up * rpm * Time.deltaTime*0.5f,Space.Self);
+        if(active){
+            SlowDown();
+            CheckStopped();
+            Tilt();
+            childTransform.Rotate(Vector3.up * rpm * Time.deltaTime,Space.Self);
+            outerSpin.Rotate(Vector3.up * rpm * Time.deltaTime*0.5f,Space.Self);
+        }
+        
 
     }
     public void speedUp(float force){
@@ -69,6 +75,11 @@ public class SpinningTop : MonoBehaviour
             rb.AddForce(dir*rpm*knockBack,ForceMode.Impulse);
         }   
         
+    }
+    public void Throw(Vector3 dir){
+        active = true;
+        rb.isKinematic=false;
+        rb.AddForce(dir,ForceMode.Impulse);
     }
     
 }
